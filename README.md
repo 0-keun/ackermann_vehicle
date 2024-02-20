@@ -6,7 +6,10 @@ tested in ubuntu 20.04, ROS noetic
 ```bash
 cd catkin_ws/src
 git clone https://github.com/0-keun/ackermann_vehicle.git
+sudo apt install ros-noetic-ackermann-msgs
 cd ..
+rosdep install --from-paths src --ignore-src -r -y
+catkin_make
 source devel/setup.bash
 ```
 
