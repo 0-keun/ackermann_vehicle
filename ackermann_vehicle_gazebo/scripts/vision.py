@@ -1,18 +1,22 @@
 #!usr/bin/env python3
+
 import rospy
 import numpy as np
+#import matplotlib.pyplot as plt
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from birdeyeview import BEV
-#from perspectiveTransform import bev
 
 class Unicon_CV():
     def __init__(self):
         self.camera_sub = rospy.Subscriber("/camera/rgb/image_raw", Image, self.camera_callback)
         self.bridge = CvBridge()
         self.bev = BEV()
-
+        self.left_lane_points = []
+        self.right_lane_points = []
+        self.avg_x = []
+        self.prev_yy_check = None
 
     def camera_callback(self, data):
         try:
@@ -22,11 +26,11 @@ class Unicon_CV():
 
             # bev_tf 
             A = [(251, 13), (400, 13), (580,140), (70,140)]
-            bev_image = self.bev.birdeyeview(cv_image,A)
+            bev_image = self.bev.birdeyeview(cv_image, A)
 
-            #preprocessing
-            gray = cv2.cvtColor(bev_image, cv2.COLOR_BGR2GRAY)
-            blur = cv2.GaussianBlur(gray, (5, 5), 0)  
+            #annotation beacuse don't use
+            #gray = cv2.cvtColor(bev_image, cv2.COLOR_BGR2GRAY)
+            #blur = cv2.GaussianBlur(gray, (5, 5), 0)  
 
             hsv = cv2.cvtColor(bev_image, cv2.COLOR_BGR2HSV)
 
@@ -43,30 +47,58 @@ class Unicon_CV():
 
             image = bev_image.copy()
             
-            matrix_zeros = np.zeros((10, 32, 2), dtype=int)
-
-            for i in range(5): # line 
-                yy = 350 - (i + 1) * 10  # 9간격으로 위로 이동
+            #matrix_zeros = np.zeros((10, 32, 2), dtype=int)
+            point_scale = 35
+            for i in range(10): # line each 
+                yy = 430 - (i + 1) * point_scale # point_scale 간격으로 위로 이동
+                
                 for j in range(32):  # 최대로 가로 개수를 늘림
                     #area = img[yy:yy+5, j*20:(j+1)*20]
-                    white_pixels = cv2.countNonZero(mask_white[yy:yy+5, j*20:(j+1)*20])
-                    yellow_pixels = cv2.countNonZero(mask_yellow[yy:yy+10, j*20:(j+1)*20]) 
+                    white_pixels = cv2.countNonZero(mask_white[yy:yy+5, j*20:(j+1)*20]) # y , x 
+                    yellow_pixels = cv2.countNonZero(mask_yellow[yy:yy+5, j*20:(j+1)*20])  # y , x
 
                     if white_pixels > 30:  
-                        image[yy:yy+4, j*20:(j+1)*20] = [0, 0, 255]  # 
-                        matrix_zeros[i][j]=[(j+1)*10,yy+2]
+                        image[yy:yy+5, j*20:(j+1)*20] = [0, 0, 255]
+                        #cv2.circle(image, ((j+1)*32, yy+2), 5, (0, 0, 255), -1)
+                        #matrix_zeros[i][j]=[(j+1)*20,yy+2]
+                        self.left_lane_points.append([(j+1)*20,yy+2])
+                        if len(self.left_lane_points) > 5:
+                            del self.left_lane_points[0]
+
+                    if yellow_pixels > 80: 
+                        image[yy:yy+5, j*20:(j+1)*20] = [255, 0, 0]  
+                        #cv2.circle(image, ((j+1)*32, yy+2), 5, (255, 0, 0), -1)
+                        #matrix_zeros[i][j]=[(j+1)*20,yy+2]
+                        self.right_lane_points.append([(j+1)*20,yy+2])
+                        if len(self.right_lane_points) > 5:
+                            del self.right_lane_points[0]
+
+                    if len(self.left_lane_points) > 0 and len(self.right_lane_points) > 0:  #left, right detect check
                         
-                    elif yellow_pixels > 80: 
-                        image[yy:yy+4, j*20:(j+1)*20] = [255, 0, 0]  
-                        matrix_zeros[i][j]=[(j+1)*10,yy+2]
+                        if len(self.avg_x) > 4: # i want five points
+                            del self.avg_x[0]
 
-            non_zero_values = matrix_zeros[np.all(matrix_zeros != [0, 0], axis=-1)]
-            #print(non_zero_values)
-            
-            #non_zero_list = non_zero_values.tolist()
-            #print(non_zero_list)
+                        left_x = self.left_lane_points[0][0] 
+                        right_x = self.right_lane_points[0][0]
 
+                        avg_x_val = int((left_x + right_x) / 2)
+                        self.avg_x.append(avg_x_val)
 
+                        if self.prev_yy_check != yy:
+                            print(f"yy : {yy}")
+                            cv2.circle(image, (self.avg_x[0], yy), 5, (0, 255, 0), -1) # radius 5
+                            self.prev_yy_check = yy
+
+                            x_data = np.array(self.avg_x) # center_x coordinate
+                            y_data = np.array([yy] * len(self.avg_x)) # center_y coordinate 
+
+                            order = 4 # 4-order equation
+                            coefficients = np.polyfit(x_data, y_data, order) # parameter [c3, c2, c1, c0] sequence print
+                            print(f"Co : {coefficients}")
+         
+            print(f"left : {self.left_lane_points}")
+            print(f"right : {self.right_lane_points}")
+            print(f"center : {self.avg_x}")
             cv2.imshow('ROI', cv_image)
             cv2.imshow('BEV', image)
 
@@ -78,8 +110,14 @@ class Unicon_CV():
         except CvBridgeError as e:
             print(e)
 
+
+    #def draw_lane(self):
+        # Use matplotlib 
+        # draw_lane
+         
     def main(self):
         rospy.spin()
+
 
 if __name__ == "__main__":
     try:
