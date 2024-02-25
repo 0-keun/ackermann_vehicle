@@ -1,65 +1,74 @@
+#!usr/bin/env python3
 import rospy
 import numpy as np
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
-from birdeyeview import birdeyeview
+from birdeyeview import BEV
+#from perspectiveTransform import bev
 
 class Unicon_CV():
     def __init__(self):
         self.camera_sub = rospy.Subscriber("/camera/rgb/image_raw", Image, self.camera_callback)
         self.bridge = CvBridge()
+        self.bev = BEV()
+
 
     def camera_callback(self, data):
         try:
+            # read cameara data, and roi
             cv_image_raw = self.bridge.imgmsg_to_cv2(data, "bgr8")
-            cv_image = cv_image_raw[0:640][240:480] 
+            cv_image = cv_image_raw[0:640][300:480]  
 
-            A = [(398, 354), (581, 345), (909, 463), (94, 505)] ## 알맞게 조정할 것
-            birdeyevie_ = birdeyeview(cv_image,A)
+            # bev_tf 
+            A = [(251, 13), (400, 13), (580,140), (70,140)]
+            bev_image = self.bev.birdeyeview(cv_image,A)
 
-            gray = cv2.cvtColor(birdeyevie_, cv2.COLOR_BGR2GRAY)
+            #preprocessing
+            gray = cv2.cvtColor(bev_image, cv2.COLOR_BGR2GRAY)
             blur = cv2.GaussianBlur(gray, (5, 5), 0)  
 
-            hsv = cv2.cvtColor(cv_image_raw, cv2.COLOR_BGR2HSV)
+            hsv = cv2.cvtColor(bev_image, cv2.COLOR_BGR2HSV)
 
-            # 흰색에 대한 HSV 범위
+            # white mask hsv lange 
             lower_white = np.array([0, 0, 180])
             upper_white = np.array([255, 30, 255])
 
-            # 노란색에 대한 HSV 범위
+            # yello mask hsv lange
             lower_yellow = np.array([20, 100, 100])
             upper_yellow = np.array([30, 255, 255])
 
             mask_white = cv2.inRange(hsv, lower_white, upper_white)
             mask_yellow = cv2.inRange(hsv, lower_yellow, upper_yellow)
 
-            img = cv2.bitwise_or(mask_white, mask_yellow)
-
-            xx = 20  
-            image = cv_image_raw.copy()  
-
+            image = bev_image.copy()
             
-            for i in range(15): # line 
-                yy = 460 - (i + 1) * 9  # 9간격으로 위로 이동
+            matrix_zeros = np.zeros((10, 32, 2), dtype=int)
+
+            for i in range(5): # line 
+                yy = 350 - (i + 1) * 10  # 9간격으로 위로 이동
                 for j in range(32):  # 최대로 가로 개수를 늘림
-                    area = img[yy:yy+5, j*20:(j+1)*20]
-                    white_pixels = cv2.countNonZero(area)
+                    #area = img[yy:yy+5, j*20:(j+1)*20]
+                    white_pixels = cv2.countNonZero(mask_white[yy:yy+5, j*20:(j+1)*20])
                     yellow_pixels = cv2.countNonZero(mask_yellow[yy:yy+10, j*20:(j+1)*20]) 
 
                     if white_pixels > 30:  
-                        image[yy:yy+5, j*20:(j+1)*20] = [0, 0, 255]  # 빨간색
-                        print(white_pixels)
+                        image[yy:yy+4, j*20:(j+1)*20] = [0, 0, 255]  # 
+                        matrix_zeros[i][j]=[(j+1)*10,yy+2]
+                        
                     elif yellow_pixels > 80: 
-                        image[yy:yy+5, j*20:(j+1)*20] = [0, 0, 255]  # red (노란색 차선)
+                        image[yy:yy+4, j*20:(j+1)*20] = [255, 0, 0]  
+                        matrix_zeros[i][j]=[(j+1)*10,yy+2]
+
+            non_zero_values = matrix_zeros[np.all(matrix_zeros != [0, 0], axis=-1)]
+            #print(non_zero_values)
+            
+            #non_zero_list = non_zero_values.tolist()
+            #print(non_zero_list)
 
 
-            mask = cv2.inRange(hsv, (0, 0, 180), (255, 255, 255))
-            edge = cv2.Canny(blur, 100, 200, 5)
-
-            cv2.imshow('filter', mask)
-            cv2.imshow('Video', image)
-            cv2.imshow('Canny', edge)
+            cv2.imshow('ROI', cv_image)
+            cv2.imshow('BEV', image)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 rospy.signal_shutdown("User exit with 'q' key")  
