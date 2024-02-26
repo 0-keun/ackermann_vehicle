@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='ASCII'?>
+<sdf version="1.4">
+  <world name="road_test">
+    <scene>
+      <ambient>120 120 120 255</ambient>
+      <sky>
+        <clouds>
+          <speed>5</speed>
+        </clouds>
+        <time>12:12</time>
+      </sky>
+    </scene>
+    <model name="road_intersection_0_0">
+      <include>
+        <uri>model://road_intersection</uri>
+      </include>
+      <pose>0 0 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_0_1">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>3 0 0.02 0 0 0.0</pose>
+    </model>
+    <model name="curb_0_1">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>3 0 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_0_2">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>6 0 0.02 0 0 0.0</pose>
+    </model>
+    <model name="curb_0_2">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>6 0 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_0_3">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>9 0 0.02 0 0 0.0</pose>
+    </model>
+    <model name="curb_0_3">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>9 0 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_intersection_0_4">
+      <include>
+        <uri>model://road_intersection</uri>
+      </include>
+      <pose>12 0 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_1_0">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>0 -3 0.02 0 0 1.57</pose>
+    </model>
+    <model name="curb_1_0">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>0 -3 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_1_1">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>3 -3 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_1_2">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>6 -3 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_1_3">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>9 -3 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_1_4">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>12 -3 0.02 0 0 1.57</pose>
+    </model>
+    <model name="curb_1_4">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>12 -3 0.02 0 0 1.57</pose>
+    </model>
+    <model name="road_straight_2_0">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>0 -6 0.02 0 0 1.57</pose>
+    </model>
+    <model name="curb_2_0">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>0 -6 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_2_1">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>3 -6 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_2_2">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>6 -6 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_2_3">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>9 -6 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_2_4">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>12 -6 0.02 0 0 1.57</pose>
+    </model>
+    <model name="curb_2_4">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>12 -6 0.02 0 0 1.57</pose>
+    </model>
+    <model name="road_straight_3_0">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>0 -9 0.02 0 0 1.57</pose>
+    </model>
+    <model name="curb_3_0">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>0 -9 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_3_1">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>3 -9 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_3_2">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>6 -9 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_3_3">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>9 -9 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_3_4">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>12 -9 0.02 0 0 1.57</pose>
+    </model>
+    <model name="curb_3_4">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>12 -9 0.02 0 0 1.57</pose>
+    </model>
+    <model name="road_intersection_4_0">
+      <include>
+        <uri>model://road_intersection</uri>
+      </include>
+      <pose>0 -12 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_4_1">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>3 -12 0.02 0 0 0.0</pose>
+    </model>
+    <model name="curb_4_1">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>3 -12 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_4_2">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>6 -12 0.02 0 0 0.0</pose>
+    </model>
+    <model name="curb_4_2">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>6 -12 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_4_3">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>9 -12 0.02 0 0 0.0</pose>
+    </model>
+    <model name="curb_4_3">
+      <include>
+        <uri>model://curb</uri>
+      </include>
+      <pose>9 -12 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_intersection_4_4">
+      <include>
+        <uri>model://road_intersection</uri>
+      </include>
+      <pose>12 -12 0.02 0 0 0.0</pose>
+    </model>
+    <include name="sun">
+      <uri>model://sun</uri>
+    </include>
+  </world>
+</sdf>
