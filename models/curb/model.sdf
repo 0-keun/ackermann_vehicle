@@ -1,0 +1,67 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='curb'>
+    <pose>0.0 1.5 0 0 -0 0</pose>
+    <link name='Wall_0'>
+      <collision name='Wall_0_Collision'>
+        <geometry>
+          <box>
+            <size>3.09 0.09 0.15</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.0 0 -0 0</pose>
+      </collision>
+      <visual name='Wall_0_Visual'>
+        <pose>0 0 0.0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.09 0.09 0.15</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 0.5</ambient>
+          <diffuse>0 0 0 0</diffuse> 
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>0.0 0.0 0 0 -0 3.14159</pose>
+    </link>
+    <link name='Wall_2'>
+      <collision name='Wall_2_Collision'>
+        <geometry>
+          <box>
+            <size>3.09 0.09 0.15</size>
+          </box>
+        </geometry>
+        <pose>0 0 0 0 -0 0</pose>
+      </collision>
+      <visual name='Wall_2_Visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>3.09 0.09 0.15</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 0.5</ambient>
+          <diffuse>0 0 0 0</diffuse> 
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>0.0 -3.0 0 0 -0 0.0</pose>
+    </link>
+    <static>1</static>
+  </model>
+</sdf>

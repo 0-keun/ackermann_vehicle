@@ -26,7 +26,7 @@ class BEV():
     def four_point_transform(self, image, pts):
         rect = self.order_points(pts)
         (tl, tr, br, bl) = rect
-        print(rect)
+        #print(rect)
         widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
         widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
         maxWidth = max(int(widthA), int(widthB))
