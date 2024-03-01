@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='ASCII'?>
+<sdf version="1.4">
+  <world name="road_test">
+    <model name="ground_plane_0_0">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>0 0 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_3_0">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>3 0 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_6_0">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>6 0 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_9_0">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>9 0 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_curve_12_0">
+      <include>
+        <uri>model://road_curve</uri>
+      </include>
+      <pose>12 0 0.02 0 0 3.14</pose>
+    </model>
+    <model name="road_straight_15_0">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>15 0 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_curve_18_0">
+      <include>
+        <uri>model://road_curve</uri>
+      </include>
+      <pose>18 0 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_0_-3">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>0 -3 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_3_-3">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>3 -3 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_6_-3">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>6 -3 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_9_-3">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>9 -3 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_12_-3">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>12 -3 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_15_-3">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>15 -3 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_18_-3">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>18 -3 0.02 0 0 1.57</pose>
+    </model>
+    <model name="road_curve_0_-6">
+      <include>
+        <uri>model://road_curve</uri>
+      </include>
+      <pose>0 -6 0.02 0 0 3.14</pose>
+    </model>
+    <model name="road_straight_3_-6">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>3 -6 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_curve_6_-6">
+      <include>
+        <uri>model://road_curve</uri>
+      </include>
+      <pose>6 -6 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_9_-6">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>9 -6 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_12_-6">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>12 -6 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_15_-6">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>15 -6 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_18_-6">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>18 -6 0.02 0 0 1.57</pose>
+    </model>
+    <model name="road_straight_0_-9">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>0 -9 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_3_-9">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>3 -9 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_6_-9">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>6 -9 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_9_-9">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>9 -9 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_12_-9">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>12 -9 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_15_-9">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>15 -9 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_18_-9">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>18 -9 0.02 0 0 1.57</pose>
+    </model>
+    <model name="road_straight_0_-12">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>0 -12 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_3_-12">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>3 -12 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_curve_6_-12">
+      <include>
+        <uri>model://road_curve</uri>
+      </include>
+      <pose>6 -12 0.02 0 0 -1.57</pose>
+    </model>
+    <model name="road_straight_9_-12">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>9 -12 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_curve_12_-12">
+      <include>
+        <uri>model://road_curve</uri>
+      </include>
+      <pose>12 -12 0.02 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_15_-12">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>15 -12 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_18_-12">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>18 -12 0.02 0 0 1.57</pose>
+    </model>
+    <model name="road_straight_0_-15">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>0 -15 0.02 0 0 1.57</pose>
+    </model>
+    <model name="ground_plane_3_-15">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>3 -15 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_6_-15">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>6 -15 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_9_-15">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>9 -15 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_12_-15">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>12 -15 0.0 0 0 0.0</pose>
+    </model>
+    <model name="ground_plane_15_-15">
+      <include>
+        <uri>model://ground_plane</uri>
+      </include>
+      <pose>15 -15 0.0 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_18_-15">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>18 -15 0.02 0 0 1.57</pose>
+    </model>
+    <model name="road_curve_0_-18">
+      <include>
+        <uri>model://road_curve</uri>
+      </include>
+      <pose>0 -18 0.02 0 0 -1.57</pose>
+    </model>
+    <model name="road_straight_3_-18">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>3 -18 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_6_-18">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>6 -18 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_9_-18">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>9 -18 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_12_-18">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>12 -18 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_straight_15_-18">
+      <include>
+        <uri>model://road_straight</uri>
+      </include>
+      <pose>15 -18 0.02 0 0 0.0</pose>
+    </model>
+    <model name="road_curve_18_-18">
+      <include>
+        <uri>model://road_curve</uri>
+      </include>
+      <pose>18 -18 0.02 0 0 0.0</pose>
+    </model>
+    <include name="sun">
+      <uri>model://sun</uri>
+    </include>
+  </world>
+</sdf>
