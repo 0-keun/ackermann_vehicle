@@ -44,11 +44,11 @@ class Unicon_CV():
         hsv = cv2.cvtColor(bev_image, cv2.COLOR_BGR2HSV)
 
         # white mask hsv lange 
-        lower_white = np.array([0, 0, 180])
+        lower_white = np.array([0, 0, 85])
         upper_white = np.array([179, 25, 255])
 
         # yello mask hsv lange
-        lower_yellow = np.array([20, 100, 100])
+        lower_yellow = np.array([20, 100, 70])
         upper_yellow = np.array([30, 255, 255])
 
         mask_white = cv2.inRange(hsv, lower_white, upper_white)
@@ -92,28 +92,19 @@ class Unicon_CV():
                 self.right_lane_pred[i][1] = self.yy+2
                 image[self.yy:self.yy+5, self.right_x-20:self.right_x] = [0, 0, 255]
 
-            estimate_line(self.y_repeat,self.left_lane_pred,self.right_lane_pred,image)
+            coef = estimate_line(self.y_repeat,self.left_lane_pred,self.right_lane_pred,image)
                 
-            coef = cv2.imshow('BEV', image)
+            cv2.imshow('BEV', image)
             
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 rospy.signal_shutdown("User exit with 'q' key")  
                 cv2.destroyAllWindows()  
                 return
-
+            
             steering_angle = get_delta(coef)
-        
-            if steering_angle > 0.13:
-                move_cmd.linear.x = 0.5
-                move_cmd.angular.z = min(steering_angle,0.8)
 
-            elif steering_angle < -0.13: 
-                move_cmd.linear.x = 0.5
-                move_cmd.angular.z = max(steering_angle,-0.8)
-
-            else:
-                move_cmd.linear.x = 0.5
-                move_cmd.angular.z = 0
+            move_cmd.linear.x = 0.5
+            move_cmd.angular.z = steering_angle
 
             cmd_vel_pub.publish(move_cmd)
             

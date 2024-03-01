@@ -7,17 +7,21 @@ import numpy as np
 
 point_scale = 10
 
-def get_delta(coef,L,ld):
+def get_delta(coef):
     ## Lookahead Distance: x_from_baselink [m] (about 1ea * 0.125m)
     ## Lateral Difference: 0.4 * offset / center_pixel
     x = 6
+    L = 0.4
 
-    x_from_baselink = x * 0.125
+    x_from_baselink = x * 0.125 + 0.4
     y_from_baselink = 0.4 * ((coef[0] * (430 - x * point_scale) + coef[1]) - 255) / 255
-    theta = math.atan(y_from_baselink/x_from_baselink)
-    delta = math.atan(2*L*math.sin(theta)/ld)
 
-    return delta
+    ld = math.sqrt(x_from_baselink**2+y_from_baselink**2)
+
+    alpha = math.atan(y_from_baselink/x_from_baselink)
+    delta = math.atan((2*L*math.sin(alpha))/ld)
+
+    return -1*delta
 
 def get_poly(coef, x):
     return coef[0]*x + coef[1]
@@ -44,9 +48,9 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
     xy_r = np.zeros((2,right_count))
 
     if left_count > 2:
-        l_coef = get_coef_oneside(y_repeat,left_lane_pred,xy_l,yy)
+        l_coef = get_coef_oneside(y_repeat,left_lane_pred,xy_l)
     if right_count > 2:
-        r_coef = get_coef_oneside(y_repeat,right_lane_pred,xy_r,yy)
+        r_coef = get_coef_oneside(y_repeat,right_lane_pred,xy_r)
 
 
     if right_count > 2 and left_count > 2:
@@ -61,6 +65,13 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
     elif right_count > 2 and left_count < 3:
         coef[0] = r_coef[0]
         coef[1] = -(442*r_coef[0]) + 225
+        # if r_coef[0] > 0.1:
+        #     coef[1] = -(442*r_coef[0]) + 225 + 225
+        # elif r_coef[0] < -0.1:
+        #     coef[1] = -(442*r_coef[0]) + 225 - 225
+        # else:
+        #     coef[1] = -(442*r_coef[0]) + 225
+
         for i in range(y_repeat):
             yy = 430 - (i + 1) * point_scale
             poly = get_poly(coef,yy)
@@ -70,6 +81,12 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
     elif left_count > 2 and right_count < 3:
         coef[0] = l_coef[0]
         coef[1] = -(442*l_coef[0]) + 225
+        # if l_coef[0] > 0.1:
+        #     coef[1] = -(442*l_coef[0]) + 225 + 225
+        # elif l_coef[0] < -0.1:
+        #     coef[1] = -(442*l_coef[0]) + 225 - 225
+        # else:
+        #     coef[1] = -(442*l_coef[0]) + 225
         for i in range(y_repeat):
             yy = 430 - (i + 1) * point_scale
             poly = get_poly(coef,yy)
