@@ -442,7 +442,7 @@ limitations under the License.
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
   </gazebo>
   
-  <xacro:arg name="camera_visual" default="true"/>
+  <xacro:arg name="camera_visual" default="false"/>
   
   <joint name="camera_joint" type="fixed">
     <origin xyz="-0.173 -0.011 0.200" rpy="0 -0.05 0"/>
