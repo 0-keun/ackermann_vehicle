@@ -155,15 +155,15 @@ class Unicon_CV():
             steering_angle = get_theta(coef)
         
             if steering_angle > 0.13:
-                move_cmd.linear.x = 0.5
+                move_cmd.linear.x = 0.5*2
                 move_cmd.angular.z = min(steering_angle,0.8)
 
             elif steering_angle < -0.13: 
-                move_cmd.linear.x = 0.5
+                move_cmd.linear.x = 0.5*2
                 move_cmd.angular.z = max(steering_angle,-0.8)
 
             else:
-                move_cmd.linear.x = 0.5
+                move_cmd.linear.x = 0.5*2
                 move_cmd.angular.z = 0
 
             cmd_vel_pub.publish(move_cmd)
