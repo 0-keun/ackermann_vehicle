@@ -92,7 +92,8 @@ class Unicon_CV():
                 self.right_lane_pred[i][1] = self.yy+2
                 image[self.yy:self.yy+5, self.right_x-20:self.right_x] = [0, 0, 255]
 
-            coef = estimate_line(self.y_repeat,self.left_lane_pred,self.right_lane_pred,image)
+            steering_angle = estimate_line(self.y_repeat,self.left_lane_pred,self.right_lane_pred,image)
+            print(type(steering_angle))
                 
             cv2.imshow('BEV', image)
             
@@ -100,10 +101,8 @@ class Unicon_CV():
                 rospy.signal_shutdown("User exit with 'q' key")  
                 cv2.destroyAllWindows()  
                 return
-            
-            steering_angle = get_delta(coef)
 
-            move_cmd.linear.x = 0.5
+            move_cmd.linear.x = 0.7
             move_cmd.angular.z = steering_angle
 
             cmd_vel_pub.publish(move_cmd)

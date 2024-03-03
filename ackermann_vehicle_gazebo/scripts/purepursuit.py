@@ -64,13 +64,12 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
 
     elif right_count > 2 and left_count < 3:
         coef[0] = r_coef[0]
-        coef[1] = -(442*r_coef[0]) + 225
-        # if r_coef[0] > 0.1:
-        #     coef[1] = -(442*r_coef[0]) + 225 + 225
-        # elif r_coef[0] < -0.1:
-        #     coef[1] = -(442*r_coef[0]) + 225 - 225
-        # else:
-        #     coef[1] = -(442*r_coef[0]) + 225
+        if r_coef[0] > 0.1:
+            coef[1] = r_coef[1] - 190
+        elif r_coef[0] < -0.1:
+            coef[1] = r_coef[1] + 190
+        else:
+            coef[1] = -(442*r_coef[0]) + 225
 
         for i in range(y_repeat):
             yy = 430 - (i + 1) * point_scale
@@ -80,13 +79,12 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
 
     elif left_count > 2 and right_count < 3:
         coef[0] = l_coef[0]
-        coef[1] = -(442*l_coef[0]) + 225
-        # if l_coef[0] > 0.1:
-        #     coef[1] = -(442*l_coef[0]) + 225 + 225
-        # elif l_coef[0] < -0.1:
-        #     coef[1] = -(442*l_coef[0]) + 225 - 225
-        # else:
-        #     coef[1] = -(442*l_coef[0]) + 225
+        if l_coef[0] > 0.1:
+            coef[1] = l_coef[1] - 190
+        elif l_coef[0] < -0.1:
+            coef[1] = l_coef[1] + 190
+        else:
+            coef[1] = -(442*l_coef[0]) + 225
         for i in range(y_repeat):
             yy = 430 - (i + 1) * point_scale
             poly = get_poly(coef,yy)
@@ -97,4 +95,5 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
         coef[0] = 0
         coef[1] = 225
 
-    return coef
+    delta = get_delta(coef)
+    return delta
