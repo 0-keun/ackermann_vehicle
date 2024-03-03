@@ -34,3 +34,9 @@ rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.1, y: 0.0, z: 
 
 - 맵 수정 시
 	arkermann_vehicle_gazebo/worlds 에 world 파일 추가 후, ackermann_vehicle_noetic.launch에서 world 파일 선언된 부분 수정
+
+---
+## 주의사항
+- lane_detect.py 사용시
+  노란 선 겹칠 경우 오작동
+  곡률이 너무 클 경우 카메라 앵글 벗어나는 문제 존재
