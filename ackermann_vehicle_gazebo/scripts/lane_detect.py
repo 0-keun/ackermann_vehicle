@@ -93,7 +93,6 @@ class Unicon_CV():
                 image[self.yy:self.yy+5, self.right_x-20:self.right_x] = [0, 0, 255]
 
             steering_angle = estimate_line(self.y_repeat,self.left_lane_pred,self.right_lane_pred,image)
-            print(type(steering_angle))
                 
             cv2.imshow('BEV', image)
             
@@ -125,3 +124,4 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         print("sorry. don't execute")
+        
