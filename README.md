@@ -14,8 +14,14 @@ source devel/setup.bash
 ```
 
 ## 2. run in gazebo
+- activate model and map
 ```bash
 roslaunch ackermann_vehicle_gazebo ackermann_vehicle_noetic.launch
+```
+- line following algorithm
+```bash
+cd catkin_ws/src/ackermann_vehicle/ackermann_vehicle_gazebo/scripts
+python3 lane_detect.py
 ```
 
 publish /cmd_vel -> 동작
