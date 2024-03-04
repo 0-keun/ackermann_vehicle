@@ -13,138 +13,87 @@ from geometry_msgs.msg import Twist
 from ackermann_msgs.msg import AckermannDriveStamped
 from ackermann_msgs.msg import AckermannDrive
 
-from purepursuit import get_theta, get_coef_oneside, get_poly
+from purepursuit import get_delta, get_poly, estimate_line
 
 
 class Unicon_CV():
     def __init__(self):
         self.camera_sub = rospy.Subscriber("/camera/rgb/image_raw", Image, self.camera_callback)
+
         self.bridge = CvBridge()
         self.bev = BEV()
+
         self.y_repeat = 12
         self.right_x = 0
         self.left_x = 0
+        self.point_scale = 10
+
         self.left_lane_pred = np.zeros((self.y_repeat,2))
         self.right_lane_pred = np.zeros((self.y_repeat,2))
-        self.avg_pred = np.zeros((self.y_repeat,2))
-        self.prev_yy_check = None
-        self.center_y = []
+
+    def camera_setting(self,data):
+        # read cameara data, and ROI
+        cv_image_raw = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        cv_image = cv_image_raw[0:640][300:480]  
+
+        # bev_tf  
+        A = [(251, 13), (400, 13), (580,140), (70,140)] # two line
+        bev_image = self.bev.birdeyeview(cv_image, A)
+
+
+        hsv = cv2.cvtColor(bev_image, cv2.COLOR_BGR2HSV)
+
+        # white mask hsv lange 
+        lower_white = np.array([0, 0, 85])
+        upper_white = np.array([179, 25, 255])
+
+        # yello mask hsv lange
+        lower_yellow = np.array([20, 100, 70])
+        upper_yellow = np.array([30, 255, 255])
+
+        mask_white = cv2.inRange(hsv, lower_white, upper_white)
+        mask_yellow = cv2.inRange(hsv, lower_yellow, upper_yellow)
+
+        image = bev_image.copy()
+
+        return mask_white, mask_yellow, image
+    
+    def find_certain_color(self,mask_certain,threshold,j):
+        certain_pixels = cv2.countNonZero(mask_certain[self.yy:self.yy+5, j*10:(j+1)*10])
+
+        if certain_pixels > threshold:
+            return [(j+1)*10,self.yy+2]
+        else:
+            return []
 
     def camera_callback(self, data):
         try:
-            # read cameara data, and roi
-            cv_image_raw = self.bridge.imgmsg_to_cv2(data, "bgr8")
-            cv_image = cv_image_raw[0:640][300:480]  
-
-            # bev_tf  
-            A = [(251, 13), (400, 13), (580,140), (70,140)] # two line
-            #A = [(120, 31), (510, 31), (620,69), (18,69)] # one line
-            bev_image = self.bev.birdeyeview(cv_image, A)
-
-
-            hsv = cv2.cvtColor(bev_image, cv2.COLOR_BGR2HSV)
-
-            # white mask hsv lange 
-            lower_white = np.array([0, 0, 180])
-            upper_white = np.array([179, 25, 255])
-
-            # yello mask hsv lange
-            lower_yellow = np.array([20, 100, 100])
-            upper_yellow = np.array([30, 255, 255])
-
-            mask_white = cv2.inRange(hsv, lower_white, upper_white)
-            mask_yellow = cv2.inRange(hsv, lower_yellow, upper_yellow)
-
-            image = bev_image.copy()
+            mask_white, mask_yellow, image = self.camera_setting(data)
             
-            point_scale = 10
-            for i in range(self.y_repeat): # line each 
-                yy = 430 - (i + 1) * point_scale # point_scale 간격으로 위로 이동
+            for i in range(self.y_repeat):
+                self.yy = 430 - (i + 1) * self.point_scale # point_scale 간격으로 위로 이동
                 self.left_x = 0
                 self.right_x = 0
-                for j in range(64):  # 최대로 가로 개수를 늘림
-                    self.left_lane_points = []
-                    self.right_lane_points = []
-                    
-                    white_pixels = cv2.countNonZero(mask_white[yy:yy+5, j*10:(j+1)*10]) # y , x 
-                    yellow_pixels = cv2.countNonZero(mask_yellow[yy:yy+5, j*10:(j+1)*10])  # y , x
 
-                    if white_pixels > 15:  
-                        # image[yy:yy+5, j*20:(j+1)*20] = [0, 0, 255]
-                        self.right_lane_points = [(j+1)*10,yy+2]
-
-                    if yellow_pixels > 35: #yello extraction 
-                        # image[yy:yy+5, j*20:(j+1)*20] = [255, 0, 0]  
-                        self.left_lane_points = [(j+1)*10,yy+2]
-
-                        # if self.prev_yy_check != yy:
-                        #     #print(f"yy : {yy}")
-                        #     cv2.circle(image, (self.avg_x[0], yy), 5, (0, 255, 0), -1) # radius 5
-                        #     self.prev_yy_check = yy
+                for j in range(64):     
+                    self.left_lane_points = self.find_certain_color(mask_white,15,j)      # x for white line
+                    self.right_lane_points = self.find_certain_color(mask_yellow,35,j)    # x for yellow line
 
                     if len(self.left_lane_points) > 0:
                         self.left_x = self.left_lane_points[0]
-
                     if len(self.right_lane_points) > 0:
                         self.right_x = self.right_lane_points[0]
 
                 self.left_lane_pred[i][0] = self.left_x
-                self.left_lane_pred[i][1] = yy+2
-                image[yy:yy+5, self.left_x-20:self.left_x] = [255, 0, 0]
+                self.left_lane_pred[i][1] = self.yy+2
+                image[self.yy:self.yy+5, self.left_x-20:self.left_x] = [255, 0, 0]
 
                 self.right_lane_pred[i][0] = self.right_x
-                self.right_lane_pred[i][1] = yy+2
-                image[yy:yy+5, self.right_x-20:self.right_x] = [0, 0, 255]
+                self.right_lane_pred[i][1] = self.yy+2
+                image[self.yy:self.yy+5, self.right_x-20:self.right_x] = [0, 0, 255]
 
-            right_count = np.count_nonzero(self.right_lane_pred) - self.y_repeat
-            left_count = np.count_nonzero(self.left_lane_pred) - self.y_repeat
-
-            xy_l = np.zeros((2,left_count))
-            xy_r = np.zeros((2,right_count))
-
-            if right_count > 2:
-                r_coef = get_coef_oneside(self.y_repeat,self.right_lane_pred,xy_r)
-            if left_count > 2:
-                l_coef = get_coef_oneside(self.y_repeat,self.left_lane_pred,xy_l)
-
-            if right_count > 2 and left_count > 2:
-                coef = [0,0]
-                coef[0] = (l_coef[0] + r_coef[0])/2
-                coef[1] = (l_coef[1] + r_coef[1])/2
-                for i in range(self.y_repeat): 
-                    yy = 430 - (i + 1) * point_scale
-                    poly = get_poly(coef,yy)
-                    tem = int(poly)
-                    image[yy:yy+5, tem-10:tem] = [0, 255, 0]
-
-            elif right_count > 2 and left_count < 3:
-                coef = [0,0]
-                coef[0] = r_coef[0]
-                coef[1] = -(442*r_coef[0]) + 225
-                for i in range(self.y_repeat):
-                    yy = 430 - (i + 1) * point_scale
-                    poly = get_poly(coef,yy)
-                    tem = int(poly)
-                    image[yy:yy+5, tem-10:tem] = [0, 255, 0]
-
-            elif left_count > 2 and right_count < 3:
-                coef = [0,0]
-                coef[0] = l_coef[0]
-                coef[1] = -(442*l_coef[0]) + 225
-                for i in range(self.y_repeat):
-                    yy = 430 - (i + 1) * point_scale
-                    poly = get_poly(coef,yy)
-                    tem = int(poly)
-                    image[yy:yy+5, tem-10:tem] = [0, 255, 0]
-
-            else:
-                coef = [0,0]
-                coef[0] = 0
-                coef[1] = 225
-
-
-
-            cv2.imshow('ROI', cv_image)
+            steering_angle = estimate_line(self.y_repeat,self.left_lane_pred,self.right_lane_pred,image)
+                
             cv2.imshow('BEV', image)
             
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -152,19 +101,8 @@ class Unicon_CV():
                 cv2.destroyAllWindows()  
                 return
 
-            steering_angle = get_theta(coef)
-        
-            if steering_angle > 0.13:
-                move_cmd.linear.x = 0.5*2
-                move_cmd.angular.z = min(steering_angle,0.8)
-
-            elif steering_angle < -0.13: 
-                move_cmd.linear.x = 0.5*2
-                move_cmd.angular.z = max(steering_angle,-0.8)
-
-            else:
-                move_cmd.linear.x = 0.5*2
-                move_cmd.angular.z = 0
+            move_cmd.linear.x = 0.7
+            move_cmd.angular.z = steering_angle
 
             cmd_vel_pub.publish(move_cmd)
             
@@ -186,4 +124,4 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         print("sorry. don't execute")
- 
+        
