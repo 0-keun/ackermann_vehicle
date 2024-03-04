@@ -65,9 +65,9 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
     elif right_count > 2 and left_count < 3:
         coef[0] = r_coef[0]
         if r_coef[0] > 0.1:
-            coef[1] = r_coef[1] - 230
+            coef[1] = r_coef[1] - 200/math.cos(1.57-math.atan(coef[0]))
         elif r_coef[0] < -0.1:
-            coef[1] = r_coef[1] + 230
+            coef[1] = r_coef[1] + 200/math.cos(1.57-math.atan(coef[0]))
         else:
             coef[1] = -(442*r_coef[0]) + 225
 
@@ -80,9 +80,9 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
     elif left_count > 2 and right_count < 3:
         coef[0] = l_coef[0]
         if l_coef[0] > 0.1:
-            coef[1] = l_coef[1] - 230
+            coef[1] = l_coef[1] - 200/math.cos(1.57-math.atan(coef[0]))
         elif l_coef[0] < -0.1:
-            coef[1] = l_coef[1] + 230
+            coef[1] = l_coef[1] + 200/math.cos(1.57-math.atan(coef[0]))
         else:
             coef[1] = -(442*l_coef[0]) + 225
         for i in range(y_repeat):
