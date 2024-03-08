@@ -10,7 +10,7 @@ point_scale = 6
 def get_delta(coef):
     ## Lookahead Distance: x_from_baselink [m] (about 1ea * 0.125m)
     ## Lateral Difference: 0.4 * offset / center_pixel
-    x = 4
+    x = 3
     L = 0.4
 
     x_from_baselink = x * 0.125 + 0.4
@@ -65,9 +65,9 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
     elif right_count > 2 and left_count < 3:
         coef[0] = r_coef[0]
         if r_coef[0] > 0.1:
-            coef[1] = r_coef[1] - 230
+            coef[1] = r_coef[1] - 235
         elif r_coef[0] < -0.1:
-            coef[1] = r_coef[1] + 230
+            coef[1] = r_coef[1] + 235
         else:
             coef[1] = -(442*r_coef[0]) + 225
 
@@ -80,9 +80,9 @@ def estimate_line(y_repeat,left_lane_pred,right_lane_pred,image):
     elif left_count > 2 and right_count < 3:
         coef[0] = l_coef[0]
         if l_coef[0] > 0.1:
-            coef[1] = l_coef[1] - 230
+            coef[1] = l_coef[1] - 235
         elif l_coef[0] < -0.1:
-            coef[1] = l_coef[1] + 230
+            coef[1] = l_coef[1] + 235
         else:
             coef[1] = -(442*l_coef[0]) + 225
         for i in range(y_repeat):

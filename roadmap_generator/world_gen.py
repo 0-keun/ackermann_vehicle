@@ -124,9 +124,9 @@ class WorldGenerator:
                 elif self.grid.CompleteGrid[i][j] == 0:  # Ground_plane
                     self.create_ground_plane(pos)
 
-                pos[0] += 3  # Move to the next column
+                pos[0] += 5  # Move to the next column
 
-            pos[1] -= 3  # Move to the next row (change the sign to positive if necessary)
+            pos[1] -= 5  # Move to the next row (change the sign to positive if necessary)
             pos[0] = init_x  # Reset X for the next row
 
         include_sun = ET.SubElement(self.world_element, "include", name="sun")

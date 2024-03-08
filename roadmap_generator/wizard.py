@@ -49,22 +49,22 @@ if __name__ == "__main__":
     straight_falg = 0
     curve_falg = 0
 
-    for item in items:
-        if "road_intersection" == item:
-            intersection_falg = 1
-        if "road_straight" == item:
-            straight_falg = 1
-        if "road_curve" == item:
-            curve_falg == 1
+    # for item in items:
+    #     if "road_intersection" == item:
+    #         intersection_falg = 1
+    #     if "road_straight" == item:
+    #         straight_falg = 1
+    #     if "road_curve" == item:
+    #         curve_falg == 1
 
-    if straight_falg == 0:
-        os.system("cp -r road_straight ~/.gazebo/models/")
+    # if straight_falg == 0:
+    os.system("cp -r road_straight ~/.gazebo/models/")
 
-    if intersection_falg == 0:
-        os.system("cp -r road_intersection ~/.gazebo/models/")
+    # if intersection_falg == 0:
+    os.system("cp -r road_intersection ~/.gazebo/models/")
         
-    if curve_falg == 0:
-        os.system("cp -r road_curve ~/.gazebo/models/")
+    # if curve_falg == 0:
+    os.system("cp -r road_curve ~/.gazebo/models/")
 
     rows = 0
     cols = 0
